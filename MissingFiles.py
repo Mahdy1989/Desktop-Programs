@@ -40,7 +40,7 @@ except IOError:
         c.write(str(input1))
         c.write('\nInput2: ')
         c.write(str(input2))
-        c.write("\n\nThe script file and all your inputs must reside in the same directory")
+        c.write("\n\nAll inputs must be in this ({}) directory".format(os.getcwd()))
         c.close()
     time.sleep(1)
     sys.exit(0)
