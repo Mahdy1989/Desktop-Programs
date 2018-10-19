@@ -81,14 +81,14 @@ try:
             count += 1
  
 except Exception as e:
-    fimages.close()
+    f2.close()
     f.close()
     fw.write('\nERROR\n')
     fw.write(str(e))
     fw.close()
     sys.exit(0)
 
-fimages.close()
+f2.close()
 f.close()
 tend = (time.time() - tstart) / 60.0
 fw.write('\n\n' + str(count) + ' records found missing.')
