@@ -1,35 +1,34 @@
 import re
 
-# The Batch number is removed.
-# for this check to be valid, no other information should be deleted or changed
+# The pattern to be remoevd here is a string named "Batch"
 
-f = 'DupCheck.txt'
-batchp = re.compile('Batch[0-9]{3}')
+f = 'Check_for_duplicates.txt'
+pattern = re.compile('Batch[0-9]{6}')
 
-d = {}
+dict1 = dict()
 
 openFile = open(f, 'r')
-w = open('Checked.txt', 'w')
+fw = open('Checked.txt', 'w')
 
 
-w.write('Duplicates Files/lines: \n')
+fw.write('Duplicates Files/lines: \n')
 for row in openFile.readlines():
-    a = batchp.search(str(row))
+    a = pattern.search(str(row))
     if a is not None:
         w = a.group()
         z = row.replace(w, '')
-        if z in d:
-            c = d[z]
-            c+=1
-            d[z] = c
-        elif z not in d:
-            d[z] = 1
+        if z in dict1:
+            count = dict1[z]
+            count+=1
+            dict1[z] = count
+        elif z not in dict1:
+            dict1[z] = 1
     
 
-for k, v in d.iteritems():
+for k, v in dict1.items():
     if v > 1:
-        w.write('\t' + str(k) + '\t\t' + str(v) + '\n')
+        fw.write('\t' + str(k) + '\t\t' + str(v) + '\n')
 
 
 openFile.close()
-w.close()
+fw.close()
