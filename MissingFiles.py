@@ -1,29 +1,21 @@
 import time, os, sys
 
 print '''This is a script to check for any missing files.
-	It uses python 2 syntax.
 
     The first input iswhat we want to compare against.
     The second input is what we want to compare to.
-	
-	This program may run out of memory for very large text files.
-	This shortcoming is due to the fact that dictionaries are read
-	entirely and stored in memory. Consider using generator comprehension
-	rather than dictionary comprehension to conserve memory. But at some 
-	point you may need to break the file into smaller pieces. To do that,
-	you can write smaller chunks of the textfile in to separate textfiles
-	using a loop structure and then run the program on each smaller piece.
 '''
 
-print '\n\nTry not to use "_" in your input names!'
+print('\n\nTry not to use "_" in your input names!')
 
-# This is the vibing table image path list
-xy = raw_input("Enter your first input without extension: ")
+# This could be all necessary paths on a database
+xy = input("Enter your first input without extension: ")
 
-# this is the HDD image path list
-sentf = raw_input("Enter your second input without extension: ")
+# These are the paths we currently have --> 
+# Go to cmd: \>dir /s/b/a:-d>textfile_name.txt
+sentf = input("Enter your second input without extension: ")
 
-print '\n' + time.ctime()
+print('\n' + time.ctime())
 tstart = time.time()
 
 if not os.path.exists('Results'):
@@ -40,9 +32,9 @@ try:
     f = open(xy,'r') # vibing file
     fimages = open(sentf,'r') # HDD file
 except IOError:
-    print "\nThe script file and all your inputs must reside in the same directory"
-    print "And make sure all inputs are text files"
-    print "One or all of the files are not found in the same directory..."
+    print("\nThe script file and all your inputs must reside in the same directory")
+    print("And make sure all inputs are text files")
+    print("One or all of the files are not found in the same directory...")
     input2 = sentf[:-4]
     input1 = xy[:-4]
     with open('input_error.txt','w') as c:
@@ -57,12 +49,10 @@ except IOError:
     time.sleep(6)
     sys.exit(0)
 
-print "\nInitializing the files ...\n"
+print("\nInitializing the files ...\n")
 
 fw = open(xname,'w') # output file for missing files
-print namex, '''is created in the Results folder.'''
-fw.write("*** Missing Files ***\n")
-fw.write("****************************************************\n")
+print(namex, 'is in Results folder.')
 
 count = 0
 
@@ -70,22 +60,22 @@ xyset = set(f.readlines())
 iset = set(fimages.readlines()) 
 allrec = len(xyset)
 try:
-    d = {k.strip().upper(): None for k in iset}
+    d = {k.strip().lower(): None for k in iset}
 except MemoryError:
-    print '\nYour input2 is too large for the memory to process.'
+    print('\nYour input2 is too large for the memory to process.')
     fw.write('\nMemory Error\n\n')
     fw.write('Your input2 is too large for the memory to process.Please consider running the dir command for\n inner folders')
     fw.write('\n\nYou need to breakdown your first input into components likewise in order to make it comparable\n to the second input.')
-    time.sleep(2)
+    time.sleep(5)
     sys.exit(0)   
 
-print "Lookup tables are created ...\n"
+print("Lookup tables are created ...", end = "\n")
 
 try:
-    print "\nComparing tables ...\n\n"
+    print("\nComparing tables ...", end = "\n\n")
     for xyrow in xyset:
         found = False
-        xy = xyrow.strip().upper()
+        xy = xyrow.strip().lower()
 
         if xy in d:
             found = True
@@ -115,27 +105,25 @@ del d
 
 ####################################################################################
 
-print "\nInitiating lookup for extra files..."
+print "\nInitiating lookup for switched comparison..."
 
-namey = namex[:-4] + '_ExtraFiles.txt'
+namey = namex[:-4] + '_SwitchedFiles.txt'
 yname = os.path.join('Results', namey)
 
-yw = open(yname,'w') # output file for extra files
-yw.write("*** Extra Files ***\n")
-yw.write("****************************************************\n")
+yw = open(yname,'w') # output file for switched files
 
 try:    
-    dy = {k.strip().upper(): None for k in xyset}
-except:
-    print "Memory may not be enough to continue initialization..."
-    yw.write("Memory may not be enough for this check!")
+    dy = {k.strip().lower(): None for k in xyset}
+except Exception as x:
+    print(str(x))
+    yw.write(str(x))
     sys.exit(0)
 
 c = 0
 
 for item in iset:
     found = False
-    im = item.strip().upper()
+    im = item.strip().lower()
 
     if im in dy:
         found = True
@@ -148,6 +136,6 @@ for item in iset:
     if found:
         found = False
 
-print '\n', c, 'extra file(s) were found...'
+print('\n', c, 'extra file(s) were found...')
 yw.close()
-time.sleep(4)
+time.sleep(1)
