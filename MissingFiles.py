@@ -1,10 +1,10 @@
 import time, os, sys
 
-print '''This is a script to check for any missing files.
+print('''This is a script to check for any missing files.
 
-    The first input iswhat we want to compare against.
+    The first input is what we want to compare against.
     The second input is what we want to compare to.
-'''
+''')
 
 print('\n\nTry not to use "_" in your input names!')
 
@@ -29,27 +29,23 @@ xy = xy + '.txt'
 sentf = sentf + '.txt'
 
 try:
-    f = open(xy,'r') # vibing file
-    fimages = open(sentf,'r') # HDD file
+    f = open(xy,'r') # first input
+    f2 = open(sentf,'r') # second input
 except IOError:
-    print("\nThe script file and all your inputs must reside in the same directory")
-    print("And make sure all inputs are text files")
-    print("One or all of the files are not found in the same directory...")
+    print("\nioError.txt is created")
     input2 = sentf[:-4]
     input1 = xy[:-4]
-    with open('input_error.txt','w') as c:
+    with open('ioError.txt','w') as c:
         c.write('Input1: ')
         c.write(str(input1))
         c.write('\nInput2: ')
         c.write(str(input2))
         c.write("\n\nThe script file and all your inputs must reside in the same directory")
-        c.write("\nAnd make sure all inputs are text files")
-        c.write("\nOne or all of the files are not found in the same directory...")
         c.close()
-    time.sleep(6)
+    time.sleep(1)
     sys.exit(0)
 
-print("\nInitializing the files ...\n")
+print("\nInitialization...\n")
 
 fw = open(xname,'w') # output file for missing files
 print(namex, 'is in Results folder.')
@@ -57,15 +53,14 @@ print(namex, 'is in Results folder.')
 count = 0
 
 xyset = set(f.readlines()) 
-iset = set(fimages.readlines()) 
+iset = set(f2.readlines()) 
 allrec = len(xyset)
 try:
-    d = {k.strip().lower(): None for k in iset}
-except MemoryError:
-    print('\nYour input2 is too large for the memory to process.')
-    fw.write('\nMemory Error\n\n')
-    fw.write('Your input2 is too large for the memory to process.Please consider running the dir command for\n inner folders')
-    fw.write('\n\nYou need to breakdown your first input into components likewise in order to make it comparable\n to the second input.')
+    dict1 = {k.strip().lower(): None for k in iset}
+except MemoryError as m:
+    print(str(m))
+    fw.write(str(m))
+    fw.write('Consider generator comprehension for both inputs. More details on the Readme on this repository')
     time.sleep(5)
     sys.exit(0)   
 
@@ -77,7 +72,7 @@ try:
         found = False
         xy = xyrow.strip().lower()
 
-        if xy in d:
+        if xy in dict1:
             found = True
 
         if found == False:
@@ -100,12 +95,12 @@ fw.write('\n\n' + str(count) + ' records found missing.')
 fw.write('\n\n' + str(time.ctime()))
 fw.write('\n\n' + str(tend) + ' minute(s) to complete this processing task.')
 fw.close()
-print "%.2f minutes to complete. Found %d missing files out of %d files" % (tend, count, allrec)
-del d
+print("{} minutes. Found {} missing files out of {} files".format(tend, count, allrec))
+del dict1
 
 ####################################################################################
 
-print "\nInitiating lookup for switched comparison..."
+print ("\nSwitched initialization...")
 
 namey = namex[:-4] + '_SwitchedFiles.txt'
 yname = os.path.join('Results', namey)
@@ -113,7 +108,7 @@ yname = os.path.join('Results', namey)
 yw = open(yname,'w') # output file for switched files
 
 try:    
-    dy = {k.strip().lower(): None for k in xyset}
+    dict2 = {k.strip().lower(): None for k in xyset}
 except Exception as x:
     print(str(x))
     yw.write(str(x))
@@ -125,7 +120,7 @@ for item in iset:
     found = False
     im = item.strip().lower()
 
-    if im in dy:
+    if im in dict2:
         found = True
 
     if found == False:
