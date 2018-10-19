@@ -1,9 +1,9 @@
 import re
 
-# The pattern to be remoevd here is a string named "Batch"
+# The pattern to be removed here is a numbered string named "Section"
 
 f = 'Check_for_duplicates.txt'
-pattern = re.compile('Batch[0-9]{6}')
+pattern = re.compile('Section_[0-9]{7}') # the number has 7 digits
 
 dict1 = dict()
 
