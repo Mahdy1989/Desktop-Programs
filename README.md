@@ -1,4 +1,4 @@
-# These are some desktop applications.
+# These are some desktop applications for Data Analysis.
 
 They are written to compare textfiles and to identify duplicate string patterns.
 
